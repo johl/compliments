@@ -93,7 +93,8 @@ def compliment():
     mail.send(msg)
 
     markup = Markup('<!DOCTYPE html><html>')
-    markup += Markup('<head><meta charset="utf-8"><title>You are awesome!</title></head>')
+    markup += Markup(
+        '<head><meta charset="utf-8"><title>You are awesome!</title></head>')
     markup += Markup('<body><pre>')
     markup += Markup.escape(msg.as_string())
     markup += Markup('</pre></body>')
