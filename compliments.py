@@ -1,22 +1,28 @@
-import json, random, requests, re, time
+import json
+import random
+import requests
+import re
+import time
 import config
 from flask import Flask, Markup
 from flask_mail import Mail, Message
 app = Flask(__name__)
-mail=Mail(app)
+mail = Mail(app)
 
 app.config.update(
     DEBUG=True,
-    #EMAIL SETTINGS
+    # EMAIL SETTINGS
     MAIL_SERVER='sslout.df.eu',
     MAIL_PORT=465,
     MAIL_USE_SSL=True,
-    MAIL_USERNAME = 'compliments@wikimedia.de',
-    MAIL_PASSWORD = config.password,
-    MAIL_SUPPRESS_SEND = hasattr(config, 'suppress_send') and config.suppress_send
+    MAIL_USERNAME='compliments@wikimedia.de',
+    MAIL_PASSWORD=config.password,
+    MAIL_SUPPRESS_SEND=hasattr(
+        config, 'suppress_send') and config.suppress_send
 )
 
-mail=Mail(app)
+mail = Mail(app)
+
 
 @app.route("/")
 def compliment():
@@ -29,8 +35,8 @@ def compliment():
 
     msg = Message(
         'Someone pressed the compliment button! Here is a compliment for you!',
-        sender= app.config['MAIL_USERNAME'],
-        recipients = address
+        sender=app.config['MAIL_USERNAME'],
+        recipients=address
     )
     msg.body = random.choice(compliments)
     mail.send(msg)
@@ -42,6 +48,7 @@ def compliment():
     markup += Markup('</pre></body>')
     markup += Markup('</html>')
     return markup
+
 
 if __name__ == "__main__":
     app.run()
