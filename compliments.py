@@ -17,17 +17,11 @@ app.config.update(
 )
 
 mail=Mail(app)
-#addresses = ['jens.ohlig@wikimedia.de', 'charlie.kritschmar@wikimedia.de']
 
 @app.route("/")
 def compliment():
     r = requests.get("https://www.wikimedia.de/wiki/Mitarbeitende")
     addresses = list(set(re.findall(r'\w+\.\w+@wikimedia.de', r.text)))
-
-    # Special thanks to fundraising
-    date = (time.strftime("%d/%m/%Y"))
-    if (date == '12/01/2017'): 
-        addresses = ['till.mletzko@wikimedia.de', 'tobias.schumann@wikimedia.de', 'carsten.direske@wikimedia.de', 'wladimir.raizberg@wikimedia.de', 'mia.buller@wikimedia.de', 'hannah.weber@wikimedia.de', 'solveigh.mertins@wikimedia.de']
 
     address = [random.choice(addresses)]
     with open('compliments.json') as json_data:
