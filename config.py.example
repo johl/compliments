@@ -1,5 +1,6 @@
 password = 'editme'
 # suppress_send = True
+emailspage = 'https://www.wikimedia.de/wiki/Mitarbeitende'
 wikiurl = 'https://wiki.wikimedia.de/w/index.php'
 complimentspage = 'Compliments'
 wikiuser = 'editme'

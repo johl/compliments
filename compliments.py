@@ -64,18 +64,30 @@ def loadCompliments():
     return compliments
 
 
+def loadEmailAddresses():
+    request = requests.get(config.emailspage)
+    soup = BeautifulSoup(request.text, 'html.parser')
+    anchors = soup.find_all('a')
+    addresses = set()
+    for anchor in anchors:
+        if 'href' in anchor.attrs:
+            href = anchor['href']
+            if href.startswith('mailto:'):
+                addresses.add(href[7:])
+    return list(addresses)
+
+
 @app.route("/")
 def compliment():
-    r = requests.get("https://www.wikimedia.de/wiki/Mitarbeitende")
-    addresses = list(set(re.findall(r'\w+\.\w+@wikimedia.de', r.text)))
+    addresses = loadEmailAddresses()
 
-    address = [random.choice(addresses)]
+    address = random.choice(addresses)
     compliments = loadCompliments()
 
     msg = Message(
         'Someone pressed the compliment button! Here is a compliment for you!',
         sender=app.config['MAIL_USERNAME'],
-        recipients=address
+        recipients=[address]
     )
     msg.body = random.choice(compliments)
     mail.send(msg)
@@ -87,6 +99,12 @@ def compliment():
     markup += Markup('</pre></body>')
     markup += Markup('</html>')
     return markup
+
+
+@app.route("/addresses")
+def addresses():
+    addrs = loadEmailAddresses()
+    return '<ul><li>' + '</li><li>'.join(addrs) + '</li></ul>'
 
 
 if __name__ == "__main__":
