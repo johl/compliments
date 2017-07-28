@@ -1,2 +1,7 @@
 password = 'editme'
 # suppress_send = True
+wikiurl = 'https://wiki.wikimedia.de/w/index.php'
+complimentspage = 'Compliments'
+wikiuser = 'editme'
+wikipassword = 'editme'
+wikidomain = ''

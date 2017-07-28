@@ -6,6 +6,7 @@ import time
 import config
 from flask import Flask, Markup
 from flask_mail import Mail, Message
+from bs4 import BeautifulSoup
 app = Flask(__name__)
 mail = Mail(app)
 
@@ -23,6 +24,40 @@ app.config.update(
 
 mail = Mail(app)
 
+wpLoginTokenPattern = re.compile('<input type="hidden" name="wpLoginToken" value="([^"]*)" />')
+
+
+def loadCompliments():
+    wpLoginTokenRequest = requests.get(
+        config.wikiurl,
+        params = {
+            'title': 'Special:Login'
+        }
+    )
+    wpLoginToken = re.search(wpLoginTokenPattern, wpLoginTokenRequest.text).group(1)
+
+    complimentsRequest = requests.post(
+        config.wikiurl,
+        cookies=wpLoginTokenRequest.cookies,
+        data = {
+            'title': 'Special:Login',
+            'action': 'submitlogin',
+            'type': 'login',
+            'returnto': config.complimentspage,
+            'wpName': config.wikiuser,
+            'wpPassword': config.wikipassword,
+            'wpDomain': config.wikidomain,
+            'wpLoginToken': wpLoginToken
+        }
+    )
+
+    soup = BeautifulSoup(complimentsRequest.text, 'html.parser')
+    content = soup.find('div', { 'id': 'mw-content-text' })
+    complimentListItems = content.findAll('li')
+    compliments = [complimentListItem.string.strip() for complimentListItem in complimentListItems]
+
+    return compliments
+
 
 @app.route("/")
 def compliment():
@@ -30,8 +65,7 @@ def compliment():
     addresses = list(set(re.findall(r'\w+\.\w+@wikimedia.de', r.text)))
 
     address = [random.choice(addresses)]
-    with open('compliments.json') as json_data:
-        compliments = json.load(json_data)
+    compliments = loadCompliments()
 
     msg = Message(
         'Someone pressed the compliment button! Here is a compliment for you!',
