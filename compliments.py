@@ -34,7 +34,7 @@ def compliment():
 
     msg = Message(
         'Someone pressed the compliment button! Here is a compliment for you!',
-        sender='compliments@wikimedia.de',
+        sender= app.config['MAIL_USERNAME'],
         recipients = address
     )
     msg.body = random.choice(compliments)
