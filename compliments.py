@@ -1,6 +1,6 @@
 import json, random, requests, re, time
 import config
-from flask import Flask
+from flask import Flask, Markup
 from flask_mail import Mail, Message
 app = Flask(__name__)
 mail=Mail(app)
@@ -39,7 +39,14 @@ def compliment():
     )
     msg.body = random.choice(compliments)
     mail.send(msg)
-    return "You are awesome!"
+
+    markup = Markup('<!DOCTYPE html><html>')
+    markup += Markup('<head><meta charset="utf-8"><title>You are awesome!</title></head>')
+    markup += Markup('<body><pre>')
+    markup += Markup.escape(msg.as_string())
+    markup += Markup('</pre></body>')
+    markup += Markup('</html>')
+    return markup
 
 if __name__ == "__main__":
     app.run()
