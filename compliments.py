@@ -12,7 +12,8 @@ app.config.update(
     MAIL_PORT=465,
     MAIL_USE_SSL=True,
     MAIL_USERNAME = 'compliments@wikimedia.de',
-    MAIL_PASSWORD = config.password
+    MAIL_PASSWORD = config.password,
+    MAIL_SUPPRESS_SEND = hasattr(config, 'suppress_send') and config.suppress_send
 )
 
 mail=Mail(app)
