@@ -26,22 +26,24 @@ app.config.update(
 
 mail = Mail(app)
 
-wpLoginTokenPattern = re.compile('<input type="hidden" name="wpLoginToken" value="([^"]*)" />')
+wpLoginTokenPattern = re.compile(
+    '<input type="hidden" name="wpLoginToken" value="([^"]*)" />')
 
 
 def loadCompliments():
     wpLoginTokenRequest = requests.get(
         config.wikiurl,
-        params = {
+        params={
             'title': 'Special:Login'
         }
     )
-    wpLoginToken = re.search(wpLoginTokenPattern, wpLoginTokenRequest.text).group(1)
+    wpLoginToken = re.search(
+        wpLoginTokenPattern, wpLoginTokenRequest.text).group(1)
 
     complimentsRequest = requests.post(
         config.wikiurl,
         cookies=wpLoginTokenRequest.cookies,
-        data = {
+        data={
             'title': 'Special:Login',
             'action': 'submitlogin',
             'type': 'login',
@@ -54,9 +56,10 @@ def loadCompliments():
     )
 
     soup = BeautifulSoup(complimentsRequest.text, 'html.parser')
-    content = soup.find('div', { 'id': 'mw-content-text' })
+    content = soup.find('div', {'id': 'mw-content-text'})
     complimentListItems = content.findAll('li')
-    compliments = [complimentListItem.string.strip() for complimentListItem in complimentListItems]
+    compliments = [complimentListItem.string.strip()
+                   for complimentListItem in complimentListItems]
 
     return compliments
 
