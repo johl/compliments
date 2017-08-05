@@ -14,12 +14,13 @@ mail = Mail(app)
 
 app.config.update(
     DEBUG=True,
-    # EMAIL SETTINGS
-    MAIL_SERVER='sslout.df.eu',
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME='compliments@wikimedia.de',
-    MAIL_PASSWORD=config.password,
+    MAIL_SERVER=config.mail_server,
+    MAIL_PORT=config.mail_port,
+    MAIL_USE_SSL=hasattr(
+        config, 'mail_use_ssl') and config.mail_use_ssl
+    ),
+    MAIL_USERNAME=config.mail_username,
+    MAIL_PASSWORD=config.mail_password,
     MAIL_SUPPRESS_SEND=hasattr(
         config, 'suppress_send') and config.suppress_send
 )

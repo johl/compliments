@@ -1,4 +1,8 @@
-password = 'editme'
+mail_server='editme',
+mail_port=465,
+mail_use_ssl=True,
+mail_username='editme',
+mail_password = 'editme'
 # suppress_send = True
 emailspage = 'https://www.wikimedia.de/wiki/Mitarbeitende'
 wikiurl = 'https://wiki.wikimedia.de/w/index.php'
