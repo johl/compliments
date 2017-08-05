@@ -26,6 +26,31 @@ Run this:
 pip3 install -r requirements.txt
 ```
 
+### Configuration
+
+Generate a configuration file:
+
+`cp config.py.example config.py`
+
+Edit `config.py` to your needs. You must fill in the appropriate values for the usernames 
+and passwords marked with `editme`.
+
+Create a wiki page on a MediaWiki installation of your choice for the compliments.
+The page should only contain lines of compliments like so:
+```
+*   You have very smooth hair.
+*   I’ve never met someone like you before.
+*   You have inspired me and changed my life.
+*   I want to be you when I grow up.
+*   You deserve a promotion.
+*   You are always happy, even when you are sad. And that’s admirable.
+*   Good effort!
+*   What a fine sweater!
+*   I appreciate all of your opinions.
+*   I like your style.
+*   Your T-shirt smells fresh.
+```
+
 ## Running the service
 
 Run it with `python3 compliments.py`.
